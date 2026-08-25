@@ -43,8 +43,12 @@ private:
     void registerShot();
     double barrelHeat = 200.0;
 
-    MilliTimeout startupThreshold;
-    MilliTimeout unjamTimer;
+    MilliTimeout timer1;
+    MilliTimeout timer2;
+    MilliTimeout timer3;
+    MilliTimeout timer4;
+    MilliTimeout timer5;
+    MilliTimeout timer6;
     enum states{
         loading,
         loaded,

@@ -13,14 +13,11 @@
 
 namespace src::Feeder {
 
+/*
+Define any variables you need here, we have provided some here to give you sensor data and other useful things
+*/
 bool limitPressed = false;
 bool wantToShoot = false;
-bool watchFire = false;
-bool underHeat = false;
-int displayState = -1;
-double displayHeat = 420.0;
-double heatRegenDis = 69.0;
-uint32_t timeDis = 20;
 
 FeederLimitCommand::FeederLimitCommand(
     src::Drivers* drivers,
@@ -42,49 +39,16 @@ void FeederLimitCommand::initialize() {
 }
 
 void FeederLimitCommand::execute() {
-    updateBarrelHeat();
-    limitPressed = feeder->getPressed();  
+    /*
+    Update calls to get sensor data and input, dont touch but do use these variables
+    to check input states and sensor data
+    */
+
+    //updates if the limit switch detects a ball, true = ball detected, false means no ball detected
+    limitPressed = feeder->getPressed();
+    //gets if the driver wants to shoot a ball, will hold true for a little bit before dropping back down to false
     wantToShoot = (drivers->remote.getSwitch(Remote::Switch::RIGHT_SWITCH) == Remote::SwitchState::UP || drivers->remote.getMouseL()==true || drivers->cvCommunicator.shouldFire());
-    bool underHeat = barrelHeat >= 100;
-    displayState = currState;
-    watchFire = false;
-    displayHeat = barrelHeat;
-   // if(!startupThreshold.isExpired()){
-        switch(currState){
-            case loading:
-                if(limitPressed){
-                    currState = loaded;
-                    feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::deactivateFeederMotor);
-                    canShoot = true;
-                }else{
-                    feeder->ForFeederMotorGroup(PRIMARY, &FeederSubsystem::deactivateFeederMotor);
-                    feeder->ForFeederMotorGroup(SECONDARY, &FeederSubsystem::activateFeederMotor);
-                }
-                break;
-            case loaded:
-                canShoot = underHeat;
-                if(wantToShoot && underHeat){
-                    currState = firing;
-                    registerShot();
-                    feeder->ForFeederMotorGroup(PRIMARY, &FeederSubsystem::activateFeederMotor);
-                    canShoot = false;
-                    //funny hero shoot noise
-                    //drivers->canSoundSystem.play(src::communicators::can_sound_system::CanSoundSystem::SOUND_SHOOT, 20);
-                }else{
-                    feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::deactivateFeederMotor);
-                }
-                break;
-            case firing:
-                if(!limitPressed){
-                    currState = loading;
-                    feeder->ForFeederMotorGroup(PRIMARY, &FeederSubsystem::deactivateFeederMotor);
-                    feeder->ForFeederMotorGroup(SECONDARY, &FeederSubsystem::activateFeederMotor);
-                }else{
-                    watchFire = true;
-                    feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::activateFeederMotor);
-                }
-                break;
-     //   }
+  
     }
 }
 
