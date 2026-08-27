@@ -1,6 +1,6 @@
 # Embedded-Interview-Challenge
 
-- Challenge 1 **(Required if Embedded or Autonomony)**
+- Challenge 1 **(Required)**
     With the given variables and fuctions, create the logic behind our Hero's feeder subsystem using C++ to load and shoot.
 
 - Challenge 2 **(Required if Embedded and not Autonomony)**

@@ -72,7 +72,7 @@ void FeederLimitCommand::execute() {
   
 }
 
-/*declare and functions down here*/
+/*declare any functions down here(make sure to include in hpp)*/
 
 //void exampleFunc(){
 //  do stuff
