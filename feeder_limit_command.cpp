@@ -66,7 +66,7 @@ void FeederLimitCommand::execute() {
     //gets if the driver wants to shoot a ball, will hold true for a little bit before dropping back down to false
     wantToShoot = (drivers->remote.getSwitch(Remote::Switch::RIGHT_SWITCH) == Remote::SwitchState::UP || drivers->remote.getMouseL()==true || drivers->cvCommunicator.shouldFire());
     //gets current rpm of the base feeder motor, might be useful for unjam
-    currRPM = feeder->getCurrentRPM(0)
+    currRPM = feeder->getCurrentRPM(0);
 
     //Do stuff
   
@@ -82,8 +82,6 @@ void FeederLimitCommand::execute() {
 
 //dont worry about this stuff
 void FeederLimitCommand::end(bool) { feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::deactivateFeederMotor); }
-
-bool FeederLimitCommand::isReady() { return true; }
 
 bool FeederLimitCommand::isFinished() const { return false; }
 

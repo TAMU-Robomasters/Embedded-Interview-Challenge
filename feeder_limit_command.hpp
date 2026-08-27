@@ -22,6 +22,8 @@ public:
         int UMJAM_TIMER_MS = 300);
     void initialize() override;
 
+    bool isFinished() const override;
+
     void execute() override;
     void end(bool interrupted) override;
 
@@ -43,13 +45,14 @@ private:
     MilliTimeout timer4;
     MilliTimeout timer5;
     MilliTimeout timer6;
-    enum states{
-        loading,
-        loaded,
-        firing
-    };
+
+    /*initialize any enums here*/
+    // enum example{
+    //     ex1,
+    //     ex2,
+    //     ex3
+    // };
     uint32_t initialTime;
-    states currState = loading;
 };
 }  // namespace src::Feeder
 
