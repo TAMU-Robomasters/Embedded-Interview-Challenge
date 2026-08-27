@@ -1,7 +1,5 @@
 # Embedded-Interview-Challenge
 
-You will not need to modify the .hpp, only the .cpp file.
-
 - Challenge 1 **(Required if Embedded or Autonomony)**
     With the given variables and fuctions, create the logic behind our Hero's feeder subsystem using C++ to load and shoot.
 
