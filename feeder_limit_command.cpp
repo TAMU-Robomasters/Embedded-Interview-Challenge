@@ -14,14 +14,15 @@
 namespace src::Feeder {
 
 /*
-Define any variables you need here, we have provided some here to give you sensor data and other useful things
+Define any variables you need here! 
+We have provided some here to give you sensor data and other useful things
 */
 bool limitPressed = false;
 bool wantToShoot = false;
 float currRPM = 0.0;
 
 
-//subsystem declaration stuff, do not touch
+//Subsystem declarations, do not touch these
 FeederLimitCommand::FeederLimitCommand(
     src::Drivers* drivers,
     FeederSubsystem* feeder,
@@ -35,15 +36,10 @@ FeederLimitCommand::FeederLimitCommand(
 }
 
 void FeederLimitCommand::initialize() {
-    //makes sure robot doesnt shoot when turned on
+    //Makes sure robot doesn't shoot when turned on
     feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::deactivateFeederMotor);
-    //to activate motors call feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::activateFeederMotor);
-    //and deactivate at the end if your turning them off. to call a specific motor replace ALL with
-    //LOADER or KICKER, these are described in the video
 
-    //initialized 6 timers, you can use as many or as few as you like.
-    //units for the timer are in milliseconds, call .restart(milliseconds) to activate the timer for that long
-    //check if a timer has expired by calling timer.isExpired(), will return true if timer is not running/is done
+    //Initialized 6 timers, you can use as many or as few as you like
     timer1.restart(0);
     timer2.restart(0);
     timer3.restart(0);
@@ -51,8 +47,7 @@ void FeederLimitCommand::initialize() {
     timer5.restart(0);
     timer6.restart(0);
 
-    //sys time on initialization, might be useful for heat managment
-    //can call getTimeMilliseconds() anywhere to get current system
+    //System time on initialization, might be useful for heat managment
     initialTime = tap::arch::clock::getTimeMilliseconds();
 }
 
@@ -61,18 +56,25 @@ void FeederLimitCommand::execute() {
     Update calls to get sensor data and input, dont touch but do use these variables
     to check input states and sensor data
     */
-    //updates if the limit switch detects a ball, true = ball detected, false means no ball detected
+
+    //Updates if the limit switch detects a ball 
+    //True = ball detected, False means no ball detected
     limitPressed = feeder->getPressed();
-    //gets if the driver wants to shoot a ball, will hold true for a little bit before dropping back down to false
+
+    //Gets if the driver wants to shoot a ball
+    //Will hold true for a little bit before dropping back down to false
     wantToShoot = (drivers->remote.getSwitch(Remote::Switch::RIGHT_SWITCH) == Remote::SwitchState::UP || drivers->remote.getMouseL()==true || drivers->cvCommunicator.shouldFire());
-    //gets current rpm of the base feeder motor, might be useful for unjam
+
+    //Gets current rpm of the base feeder motor, might be useful for unjam
     currRPM = feeder->getCurrentRPM(0);
 
-    //Do stuff
-  
+    //Write Here for Challenge 1, 2, 3!
+    
+    
+    
 }
 
-/*declare any functions down here(make sure to include in hpp)*/
+/*Declare any helper functions down here (make sure to include in hpp)*/
 
 //void exampleFunc(){
 //  do stuff
@@ -80,7 +82,7 @@ void FeederLimitCommand::execute() {
 
 
 
-//dont worry about this stuff
+//Do not touch these functions, they are required for the command to work properly
 void FeederLimitCommand::end(bool) { feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::deactivateFeederMotor); }
 
 bool FeederLimitCommand::isFinished() const { return false; }
