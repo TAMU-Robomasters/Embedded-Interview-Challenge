@@ -10,6 +10,6 @@
     In addition to handling overheat, occasionally the loader will jam. Create a system detect and handle the jam.
 
 Logic should be written in feeder_limit_command.cpp under the execute function. Variables should be initialized near the top of the file. 
-Please read the comments before attempting, we define all the commands, timers, variables, and other useful things throughout the files.
+Please read the comments before attempting, we define commands, timers, variables, and other useful things throughout the files.
 
 NOTE: You will not be able to compile or run the code given, but do not worry, you will be given ~5 minutes to run and debug any issues with the code, be it syntax or logic. Additionally, you will not be rejected if the robot doesn't work, we mainly want to see your problem solving, understanding of logic, and general coding skills. 
