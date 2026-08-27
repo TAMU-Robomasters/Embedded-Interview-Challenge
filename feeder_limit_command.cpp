@@ -19,6 +19,7 @@ Define any variables you need here, we have provided some here to give you senso
 bool limitPressed = false;
 bool wantToShoot = false;
 
+//subsystem declaration stuff, do not touch
 FeederLimitCommand::FeederLimitCommand(
     src::Drivers* drivers,
     FeederSubsystem* feeder,
@@ -32,10 +33,18 @@ FeederLimitCommand::FeederLimitCommand(
 }
 
 void FeederLimitCommand::initialize() {
+    //makes sure robot doesnt shoot when turned on
     feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::deactivateFeederMotor);
-    startupThreshold.restart(500);  // delay to wait before attempting unjam
-    unjamTimer.restart(0);
-    prevTime = tap::arch::clock::getTimeMilliseconds();
+    //initialized 6 timers, you can use as many or as few as you like. 
+    timer1.restart(0);
+    timer2.restart(0);
+    timer3.restart(0);
+    timer4.restart(0);
+    timer5.restart(0);
+    timer6.restart(0);
+
+    //sys time on initialization, might be useful for heat managment
+    initialTime = tap::arch::clock::getTimeMilliseconds();
 }
 
 void FeederLimitCommand::execute() {
@@ -43,29 +52,21 @@ void FeederLimitCommand::execute() {
     Update calls to get sensor data and input, dont touch but do use these variables
     to check input states and sensor data
     */
-
     //updates if the limit switch detects a ball, true = ball detected, false means no ball detected
     limitPressed = feeder->getPressed();
     //gets if the driver wants to shoot a ball, will hold true for a little bit before dropping back down to false
     wantToShoot = (drivers->remote.getSwitch(Remote::Switch::RIGHT_SWITCH) == Remote::SwitchState::UP || drivers->remote.getMouseL()==true || drivers->cvCommunicator.shouldFire());
   
-    }
 }
 
-void FeederLimitCommand::updateBarrelHeat(){
-    uint32_t currTime =  tap::arch::clock::getTimeMilliseconds();
-    timeDis = currTime;
-    uint32_t timeDiff = currTime - prevTime;
-    prevTime = currTime;
-    double heatLoss = (24.0/1000.0)*timeDiff;
-    heatRegenDis = heatLoss;
-    barrelHeat += heatLoss;
-    if(barrelHeat > 200){barrelHeat = 200;}
-};
+/*declare and functions down here*/
 
-void FeederLimitCommand::registerShot(){
-    barrelHeat -= 100; 
-};
+//void exampleFunc(){
+//  do stuff
+//};
+
+
+
 
 void FeederLimitCommand::end(bool) { feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::deactivateFeederMotor); }
 

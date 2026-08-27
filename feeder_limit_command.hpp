@@ -24,12 +24,6 @@ public:
 
     void execute() override;
     void end(bool interrupted) override;
-    bool isReady() override;
-
-    bool isFinished() const override;
-
-    bool getCanShoot(){return canShoot;};
-
 
     const char* getName() const override { return "limit feeder"; }
 
@@ -39,9 +33,9 @@ private:
     src::Utils::RefereeHelperTurreted* refHelper;
     int UNJAM_TIMER_MS;
     bool canShoot = false;
-    void updateBarrelHeat();
-    void registerShot();
-    double barrelHeat = 200.0;
+
+    /*Initialize any functions here*/
+    //void exampleFunc();
 
     MilliTimeout timer1;
     MilliTimeout timer2;
@@ -54,7 +48,7 @@ private:
         loaded,
         firing
     };
-    uint32_t prevTime;
+    uint32_t initialTime;
     states currState = loading;
 };
 }  // namespace src::Feeder
