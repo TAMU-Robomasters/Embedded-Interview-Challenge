@@ -32,7 +32,7 @@ Call **getTimeMilliseconds()** to get current system time.
     - Hero is our hard hitting robot with a semi-automatic turret, shooting a 42mm projectile (aka a golf ball). The robot must first load the shot using the LOADER motor. Once loaded, you must shoot the shot using the KICKER motor. Using the variables and functions that you create and are given, create the logic behind our Hero's feeder subsystem using C++ to load and shoot. 
 
 - Challenge 2 **(Required if Embedded and not Autonomony)**
-    - Barrel Heat is a mechanic that limits how much a robot is able to shoot in a certain amount of time and if it overheats, the robot will lock. Hero's max heat is 100, each 42mm shot adds 100 amount of heat, and dissapates at 10 heat/second. Implement into your load and shooting logic a heat management system to handle overheat. 
+    - Barrel Heat is a mechanic that limits how much a robot is able to shoot in a certain amount of time and if it overheats, the robot will lock. Hero's max heat is 200, each 42mm shot adds 100 amount of heat, and dissapates at 10 heat/second. Implement into your load and shooting logic a heat management system to handle overheat. 
 
 - Challege 3 **(Bonus)**
     - Hero, in the past, would jam due to a 42mm shot getting stuck inbetween the ammo reserve and the loader. To first determine a jam, check if the LOADER motor is moving when you command it to. If it isn't moving, you have a jam! Reverse the LOADER motor for UNJAM_TIMER_MS to relieve the pressure within the system, then try to load again. Implement the jam management system into your load and shooting logic.
