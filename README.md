@@ -1,10 +1,24 @@
+
 # Embedded-Interview-Challenge
 
-You will not need to modify the .hpp, only the .cpp file.
-
+### **HEADS UP!** 
 Logic should be written under the execute function. Variables should be initialized near the top of the file. Feel free to write any helper functions (DEFINE THEM IN THE .hpp FILE!).
 Please read the comments before attempting, we define commands, timers, variables, and other useful things throughout the files.
 
+# Start Here 
+Welcome to the Embedded Interview Challenge! Your task is to create the control systems we have in place for our heavy hitter, Hero. Below are some videos showing some of the parts moving to help give some context for you.
+
+<img width="800" height="449" alt="20260907_172301-ezgif com-video-to-gif-converter" src="https://github.com/user-attachments/assets/b9f7f3fe-40e3-463b-9d77-454074e4d3fc" />
+
+Here is the LOADER motor in action to load balls into the ball path, pushing a ball into the KICKER motor. The unjam challenge will have you reverse this.
+
+<img width="800" height="449" alt="20260907_172358-ezgif com-video-to-gif-converter" src="https://github.com/user-attachments/assets/0704b086-f4fe-41ff-a9ab-187230b01cdf" />
+
+Here is the KICKER motor in action to "kick" the shot into the flywheel to shoot. It is the small, black motor that spins for a small interval into the constantly spinning flywheel.
+
+<img width="542" height="360" alt="20260907_172442-ezgif com-video-to-gif-converter (1)" src="https://github.com/user-attachments/assets/6958d924-f97b-4544-b129-b24e1f95f2ed" />
+
+Here is the heat display increasing and decreasing over time. You do not need to make the display work, just the internal logic.
 
 ## Helpful Commands
 
@@ -31,7 +45,6 @@ Call **getTimeMilliseconds()** to get current system time.
 - Challenge 1 **(Required)**
     - Hero is our hard hitting robot with a semi-automatic turret, shooting a 42mm projectile (aka a golf ball). The robot must first load the shot using the LOADER motor. Once loaded, you must shoot the shot using the KICKER motor. Using the variables and functions that you create and are given, create the logic behind our Hero's feeder subsystem using C++ to load and shoot. 
 
-<<<<<<< HEAD
 - Challenge 2 **(Required)**
     - Barrel Heat is a mechanic that limits how much a robot is able to shoot in a certain amount of time and if it overheats, the robot will lock. Hero's max heat is 200, each 42mm shot adds 100 amount of heat, and dissapates at 10 heat/second. Implement into your load and shooting logic a heat management system to handle overheat. 
 
