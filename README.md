@@ -1,10 +1,6 @@
 
 # Embedded-Interview-Challenge
 
-### **HEADS UP!** 
-Logic should be written under the execute function. Variables should be initialized near the top of the file. Feel free to write any helper functions (DEFINE THEM IN THE .hpp FILE!).
-Please read the comments before attempting, we define commands, timers, variables, and other useful things throughout the files.
-
 # Start Here 
 Welcome to the Embedded Interview Challenge! Your task is to create the control systems we have in place for our heavy hitter, Hero. Below are some videos showing some of the parts moving to help give some context for you.
 
@@ -20,6 +16,10 @@ Here is the KICKER motor in action to "kick" the shot into the flywheel to shoot
 
 Here is the heat display increasing and decreasing over time. You do not need to make the display work, just the internal logic.
 
+### **HEADS UP!** 
+Logic should be written under the execute function. Variables should be initialized near the top of the file. Feel free to write any helper functions (DEFINE THEM IN THE .hpp FILE!).
+Please read the comments before attempting, we define commands, timers, variables, and other useful things throughout the files.
+
 ## Helpful Commands
 
 
@@ -29,6 +29,10 @@ To activate motors, call
 
 To deactivate motors, call
 **feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::deactivateFeederMotor);**
+
+Specifically for unjam, call
+**feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::unjamFeederMotor);**
+Keep this ALL for unjam.
 
 To call a specific motor replace ALL with LOADER or KICKER, these are described in the video.
 
