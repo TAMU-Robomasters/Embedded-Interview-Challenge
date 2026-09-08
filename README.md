@@ -31,8 +31,7 @@ To deactivate motors, call
 **feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::deactivateFeederMotor);**
 
 Specifically for unjam, call
-**feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::unjamFeederMotor);**
-Keep this ALL for unjam.
+**feeder->ForFeederMotorGroup(LOADER, &FeederSubsystem::unjamFeederMotor);**
 
 To call a specific motor replace ALL with LOADER or KICKER, these are described in the video.
 
