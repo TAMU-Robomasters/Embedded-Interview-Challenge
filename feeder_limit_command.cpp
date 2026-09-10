@@ -21,6 +21,8 @@ bool limitPressed = false;
 bool wantToShoot = false;
 float currRPM = 0.0;
 
+int heat = 0;
+
 
 //Subsystem declarations, do not touch these
 FeederLimitCommand::FeederLimitCommand(
@@ -70,6 +72,45 @@ void FeederLimitCommand::execute() {
 
     //Write Here for Challenge 1, 2, 3!
     
+	//heat second timer
+	if (timer2.isExpired()) {
+		timer2.restart(1000);
+		if (heat >= 10) { heat -= 10; }
+	}
+
+	//loading ball
+	if (!limitPressed && wantToShoot && (heat+100 < 200)) {
+	    feeder->ForFeederMotorGroup(LOADER, &FeederSubsystem::activateFeederMotor);
+	    feeder->ForFeederMotorGroup(KICKER, &FeederSubsystem::deactivateFeederMotor);
+
+	    if (currRPM == 0) {
+
+		if (timer3.isExpired()) {	
+	    	  timer3.restart(UNJAM_TIMER_MS);
+	    	}
+		else {
+		  feeder->ForFeederMotorGroup(LOADER, &FeederSubsystem::unjamFeederMotor);
+		}
+	    }
+	} 
+	//Kicking Ball
+	else if (limitPressed) {
+	    if (timer1.isExpired()) {	
+	        timer1.restart(1000);
+	        heat += 100;
+	    }
+	    feeder->ForFeederMotorGroup(LOADER, &FeederSubsystem::deactivateFeederMotor);
+	    feeder->ForFeederMotorGroup(KICKER, &FeederSubsystem::activateFeederMotor);
+	    
+	}
+	//Turning off the system
+	else if (timer1.isExpired() || !limitPressed) {
+	    timer1.restart(0);
+	    feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::deactivateFeederMotor);
+	}
+	else {
+	    feeder->ForFeederMotorGroup(ALL, &FeederSubsystem::deactivateFeederMotor);
+	}
     
     
 }
