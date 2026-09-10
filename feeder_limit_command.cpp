@@ -49,6 +49,12 @@ void FeederLimitCommand::initialize() {
 
     //System time on initialization, might be useful for heat managment
     initialTime = tap::arch::clock::getTimeMilliseconds();
+
+    //reset state and heat stuff
+    state = FeederState::IDLE;
+    heat = 0.0f;
+    lastHeatUpdateTime = initialTime;
+    canShoot = true;
 }
 
 void FeederLimitCommand::execute() {
@@ -69,16 +75,82 @@ void FeederLimitCommand::execute() {
     currRPM = feeder->getCurrentRPM(0);
 
     //Write Here for Challenge 1, 2, 3!
-    
-    
-    
+
+    //this is for challenge 2, it will decay heat over time and figure out if we're allowed to fire
+    updateHeat();
+
+    //if the state is idle, nothing will happen until the driver wants to shoot and it CAN shoot
+    if(state == FeederState::IDLE) {
+        if(wantToShoot && canShoot) {
+            if(limitPressed) {
+                //if a ball is detected, just fire
+                startKicking();
+            } else{
+                //no ball is detected so it needs to load one
+                startLoading();
+            }
+        }
+    }
+
+    else if(state == FeederState::LOADING) {
+        if (limitPressed) {
+            //the ball is there so we can shoot it
+            startKicking();
+        } else if(timer1.isExpired() && currRPM < JAM_RPM_THRESHOLD) {
+            //this is a jam, so I'm using the unjam code you guys provided
+            feeder->ForFeederMotorGroup(LOADER, &FeederSubsystem::unjamFeederMotor);
+            //once unjammed, I need to restart the unjam timer and go to the unjam state
+            timer2.restart(UNJAM_TIMER_MS);
+            state = FeederState::UNJAMMING;
+        }
+    } 
+    else if(state == FeederState::UNJAMMING) {
+        if (timer2.isExpired()) {
+            //the pressure is relieved, and it will try loading again
+            startLoading();
+        }
+    } 
+    else if(state == FeederState::KICKING) {
+        if (timer3.isExpired()) {
+            //the ball is fired so kicker is deactivated and the state is idle
+            feeder->ForFeederMotorGroup(KICKER, &FeederSubsystem::deactivateFeederMotor);
+            state = FeederState::IDLE;
+        }
+    }
 }
 
 /*Declare any helper functions down here (make sure to include in hpp)*/
 
-//void exampleFunc(){
-//  do stuff
-//};
+void FeederLimitCommand::updateHeat(){
+    uint32_t now = tap::arch::clock::getTimeMilliseconds();
+    uint32_t elapsed = now - lastHeatUpdateTime;
+    lastHeatUpdateTime = now;
+
+    //this will dissipate heat based on however much time passed since the last tick
+    heat -= (elapsed / 1000.0f) * HEAT_DISSIPATION_PER_SEC;
+    if (heat < 0.0f) {
+        heat = 0.0f;
+    }
+
+    //can't allow a shot that will push us over the max
+    canShoot = (heat + HEAT_PER_SHOT) <= MAX_HEAT;
+}
+
+void FeederLimitCommand::startLoading() {
+    //given code
+    feeder->ForFeederMotorGroup(LOADER, &FeederSubsystem::activateFeederMotor);
+    timer1.restart(JAM_CHECK_DELAY_MS);
+    state = FeederState::LOADING;
+}
+
+void FeederLimitCommand::startKicking() {
+    //given code
+    feeder->ForFeederMotorGroup(LOADER, &FeederSubsystem::deactivateFeederMotor);
+    feeder->ForFeederMotorGroup(KICKER, &FeederSubsystem::activateFeederMotor);
+    heat += HEAT_PER_SHOT;
+    timer3.restart(KICK_DURATION_MS);
+    state = FeederState::KICKING;
+}
 
 
 
