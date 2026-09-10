@@ -20,6 +20,8 @@ We have provided some here to give you sensor data and other useful things
 bool limitPressed = false;
 bool wantToShoot = false;
 float currRPM = 0.0;
+int ammoCOUNT=0
+int BarHeat
 
 
 //Subsystem declarations, do not touch these
@@ -69,7 +71,48 @@ void FeederLimitCommand::execute() {
     currRPM = feeder->getCurrentRPM(0);
 
     //Write Here for Challenge 1, 2, 3!
+    //Challenge 1 
+    if (wantToShoot==True){
+    ForFeederMotorGroup(LOADER, &FeederSubsystem::activateFeederMotor);
+    ammoCOUNT++;
     
+    //unjam
+
+    if limitPressed=False
+    {
+        While (limitPressed=False){
+        ForFeederMotorGroup(LOADER, &FeederSubsystem::unjamFeederMotor)
+        UNJAM_TIMER_MS
+        }
+    }
+   
+    While (ammoCOUNT>0){
+    ForFeederMotorGroup(Kicker, &FeederSubsystem::activateFeederMotor);
+    ammoCOUNT=ammoCOUNT-1;
+    BarHeat+=100;
+    if BarHeat>100:
+    ForFeederMotorGroup(Kicker, &FeederSubsystem::deactivateFeederMotor);
+     While (BarHeat>100){
+    timer1.restart(10000)
+     if timer.isFinished()=True{
+        Barheat-10
+    }
+
+    }
+    if currRPM=0
+    {
+        While (limitPressed=False){
+        ForFeederMotorGroup(LOADER, &FeederSubsystem::unjamFeederMotor)
+        UNJAM_TIMER_MS
+        }
+    }
+   
+}
+    
+    //Challenge2
+   
+    }
+ 
     
     
 }
